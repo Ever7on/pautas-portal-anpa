@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Kanban de Pautas ANPA 2026</title>
+<meta name="description" content="Quadro de pautas 2026 da Assessoria de Comunicação da ANPA para o Portal de Notícias Adventistas.">
+<meta name="theme-color" content="#103826">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Pautas ANPA">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+/* Layout: cabeçalho verde com resumo do ano, barra de ferramentas flutuante, cada mês num cartão arredondado com barra de progresso; kanban em colunas leves */
+:root{
+  --bg:#f3f1ea; --surface:#ffffff; --surface-2:#faf9f5; --hover:#f6f3ea; --fg:#15201a; --muted:#66736b; --line:#ebe8de; --line2:#d9d5c7;
+  --accent:#1d5a40; --gold:#b08530; --band:#103826; --band-2:#1a4d35; --band-fg:#f4efe0; --band-gold:#dcb764;
+  --s-todo:#8f9a93; --s-pre:#b08530; --s-prod:#3d7a5c; --s-pub:#123d2b; --late:#b23a2a;
+  --p-A:#b23a2a; --p-M:#b08530; --p-B:#6f8f7d;
+  --k-i:#1d5a40; --k-c:#a67c26; --k-s:#6f8f7d;
+  --on:#ffffff; --on-k:#ffffff;
+  --shadow:0 1px 2px rgba(16,40,28,.06),0 4px 16px rgba(16,40,28,.06);
+  --shadow-lg:0 12px 40px rgba(16,40,28,.18);
+  --r:16px;
+  --f:"Manrope","Segoe UI",Roboto,Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0c130f; --surface:#141e18; --surface-2:#18241d; --hover:#1c2a22; --fg:#e8ece4; --muted:#9aa89f; --line:#233128; --line2:#334338;
+  --accent:#7fc3a0; --gold:#d8b25c; --band:#0a2418; --band-2:#123423;
+  --s-todo:#56635b; --s-pre:#a67c26; --s-prod:#2f6b4f; --s-pub:#1d7a52;
+  --k-i:#7fc3a0; --k-c:#d8b25c; --k-s:#9fbfae; --on-k:#0c130f;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25); --shadow-lg:0 12px 40px rgba(0,0,0,.5); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c130f; --surface:#141e18; --surface-2:#18241d; --hover:#1c2a22; --fg:#e8ece4; --muted:#9aa89f; --line:#233128; --line2:#334338;
+  --accent:#7fc3a0; --gold:#d8b25c; --band:#0a2418; --band-2:#123423;
+  --s-todo:#56635b; --s-pre:#a67c26; --s-prod:#2f6b4f; --s-pub:#1d7a52;
+  --k-i:#7fc3a0; --k-c:#d8b25c; --k-s:#9fbfae; --on-k:#0c130f;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25); --shadow-lg:0 12px 40px rgba(0,0,0,.5); color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--fg);font-family:var(--f);font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1480px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* cabeçalho */
+.boardhead{background:radial-gradient(120% 140% at 100% 0%,var(--band-2) 0%,var(--band) 60%);color:var(--band-fg)}
+.boardhead .wrap{padding-block:26px 18px;display:grid;gap:18px}
+.bh-top{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--band-gold)}
+h1{margin:6px 0 4px;font-size:clamp(26px,3.6vw,36px);font-weight:800;letter-spacing:-.02em;line-height:1.05;text-wrap:balance}
+h1 span{color:var(--band-gold)}
+.sub{color:#c6d1c8;font-size:13.5px;margin:0;max-width:70ch}
+.save{font-size:12.5px;color:#d7e0d8;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:6px 12px;white-space:nowrap}
+.save::before{content:"";width:8px;height:8px;border-radius:50%;background:#7fc3a0;box-shadow:0 0 0 3px rgba(127,195,160,.25)}
+.save.warn::before{background:var(--band-gold);box-shadow:0 0 0 3px rgba(220,183,100,.25)}
+.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.stat{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:12px 14px;display:grid;gap:2px;min-width:0}
+.stat .v{font-size:24px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1}
+.stat .l{font-size:12px;color:#c6d1c8}
+.stat.late .v{color:#ffb4a6}
+.stat .bar{height:5px;border-radius:99px;background:rgba(255,255,255,.14);overflow:hidden;margin-top:6px}
+.stat .bar span{display:block;height:100%;background:var(--band-gold);border-radius:99px}
+@media (max-width:820px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.stat:last-child{grid-column:1/-1}}
+.seg{display:inline-flex;background:rgba(0,0,0,.22);border-radius:12px;padding:4px;gap:4px;justify-self:start}
+.tab{font:700 13.5px var(--f);background:none;border:0;color:#c6d1c8;padding:8px 16px;border-radius:9px;cursor:pointer;transition:background .15s,color .15s}
+.tab[aria-selected="true"]{background:var(--band-fg);color:var(--band)}
+
+/* barra de ferramentas */
+.toolbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:-0px 0 18px;padding:12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);margin-top:16px}
+.search{font:500 14px var(--f);padding:9px 12px 9px 34px;border:1px solid var(--line2);border-radius:10px;background:var(--surface-2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%238f9a93' stroke-width='2' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E") no-repeat 11px center;color:var(--fg);width:260px;max-width:100%;flex:1 1 200px}
+select.flt{font:600 13.5px var(--f);padding:9px 10px;border:1px solid var(--line2);border-radius:10px;background:var(--surface-2);color:var(--fg);cursor:pointer}
+.tb-btn{font:700 13.5px var(--f);padding:9px 14px;border:1px solid var(--line2);border-radius:10px;background:var(--surface-2);color:var(--fg);cursor:pointer;transition:transform .1s,box-shadow .15s}
+.tb-btn:hover{box-shadow:var(--shadow)}
+.tb-btn.primary{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+/* grupos */
+.groups{display:grid;gap:18px;padding-bottom:24px}
+.group{--g:var(--accent);background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+.gh{display:flex;align-items:center;gap:12px;padding:14px 16px;flex-wrap:wrap}
+.gh button{background:none;border:0;cursor:pointer;color:var(--fg);font:800 18px var(--f);letter-spacing:-.01em;display:flex;align-items:center;gap:10px;padding:2px 0}
+.gh button::before{content:"";width:10px;height:22px;border-radius:4px;background:var(--g);order:-1}
+.gh .chev{color:var(--muted);display:inline-block;transition:transform .2s;font-size:11px}
+.group.closed .chev{transform:rotate(-90deg)}
+.gh .cnt{color:var(--muted);font-size:13px;font-weight:600}
+.gh .flag{font-size:11.5px;font-weight:700;color:var(--gold);background:color-mix(in srgb,var(--gold) 14%,transparent);border-radius:999px;padding:3px 10px}
+.gprog{margin-left:auto;display:flex;align-items:center;gap:10px;min-width:200px}
+.gprog .battery{flex:1;height:8px;border-radius:99px;overflow:hidden;background:var(--line);display:flex}
+.gprog .battery span{display:block;height:100%}
+.gprog .pct{font-size:12.5px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+@media (max-width:640px){.gprog{min-width:0;width:100%;margin-left:0}}
+.tscroll{overflow-x:auto;border-top:1px solid var(--line)}
+table{border-collapse:separate;border-spacing:0;width:100%;min-width:1320px}
+th,td{border-bottom:1px solid var(--line);padding:0 8px;height:52px;text-align:center;font-weight:500;white-space:nowrap}
+th{height:38px;font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:0 10px;background:var(--surface-2)}
+th.datecol,td.datecol{position:sticky;left:0;z-index:2;background:var(--surface);width:124px;min-width:124px;max-width:124px;padding-left:12px;text-align:left}
+th.datecol{background:var(--surface-2)}
+th.name,td.name{text-align:left;position:sticky;left:124px;background:var(--surface);z-index:1;min-width:320px;max-width:420px;white-space:normal;box-shadow:6px 0 8px -8px rgba(0,0,0,.25)}
+th.name{background:var(--surface-2)}
+@media (max-width:760px){th.name,td.name{position:static;min-width:220px;box-shadow:none}}
+tr.item td{transition:background .12s}
+tr.item:hover td{background:var(--hover)}
+tr:last-child td{border-bottom:0}
+.nm{display:flex;align-items:center;gap:6px;padding:8px 12px}
+.nm .tt{flex:1;min-width:0;font-weight:700;line-height:1.3}
+.nm .exp{background:var(--surface-2);border:1px solid var(--line);color:var(--muted);border-radius:8px;font:700 11.5px var(--f);padding:4px 9px;cursor:pointer;flex:none;opacity:.75;transition:opacity .12s}
+tr.item:hover .nm .exp,.nm .exp:focus-visible{opacity:1}
+.pill{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:28px;min-width:100px;color:var(--on);font:700 12.5px var(--f);padding:0 12px;border:0;border-radius:999px}
+button.pill{cursor:pointer;transition:transform .1s,filter .15s}
+button.pill:hover{filter:brightness(1.08);transform:translateY(-1px)}
+button.pill::after{content:"";width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid currentColor;opacity:.7}
+.col-status{width:156px}.col-prio{width:130px}.col-fmt{width:150px}.col-kind{width:140px}.col-dept{width:190px}.col-due{width:170px}.col-link{width:150px}.col-resp{width:140px}
+td.txt{padding:0 10px;font-size:13px;color:var(--fg)}
+.datec{display:inline-flex;flex-direction:column;align-items:flex-start;white-space:nowrap;background:color-mix(in srgb,var(--g) 13%,transparent);color:var(--fg);border-radius:10px;padding:4px 10px;font-size:13px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.2}
+.datec.none{background:var(--surface-2);color:var(--muted);font-weight:600;font-size:12px}
+.kind{display:inline-flex;align-items:center;gap:6px;font-size:13px}
+.kind i{width:8px;height:8px;border-radius:50%;background:var(--kc)}
+.due{font-size:12.5px;font-weight:600;color:var(--muted);display:inline-flex;align-items:center;gap:6px}
+.due.late{color:var(--late);font-weight:800}
+.due.late::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--late)}
+.due.ok{color:var(--accent);font-weight:700}
+tr.detail td{background:var(--surface-2);text-align:left;white-space:normal;padding:14px 18px 16px 24px;height:auto}
+.dgrid{display:grid;gap:6px;max-width:90ch;font-size:13.5px}
+.dgrid b{font-weight:800}
+.pop{position:fixed;z-index:50;background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow-lg);padding:8px;display:grid;gap:6px;width:190px}
+.pop .pill{width:100%;height:34px}
+.pop button.pill::after{display:none}
+.addrow td{height:46px;text-align:left}
+.addrow button{background:none;border:0;color:var(--muted);font:700 13px var(--f);padding:0 16px;cursor:pointer;height:46px;width:100%;text-align:left}
+.addrow button:hover{color:var(--accent);background:var(--hover)}
+.lnk{font-size:13px;font-weight:700;color:var(--accent);text-decoration:none;display:inline-flex;align-items:center;gap:4px;background:color-mix(in srgb,var(--accent) 10%,transparent);padding:5px 10px;border-radius:8px}
+.lnk:hover{background:color-mix(in srgb,var(--accent) 18%,transparent)}
+.dgrid .lnk{background:none;padding:0;word-break:break-all}
+.addlink{background:none;border:1px dashed var(--line2);color:var(--muted);border-radius:8px;font:700 12px var(--f);padding:5px 10px;cursor:pointer}
+.addlink:hover{color:var(--accent);border-color:var(--accent)}
+
+/* kanban */
+.kscroll{overflow-x:auto;padding-bottom:24px}
+.kboard{display:grid;grid-template-columns:repeat(5,minmax(250px,1fr));gap:14px;min-width:min-content}
+.kcol{background:color-mix(in srgb,var(--surface) 55%,var(--bg));border:1px solid var(--line);border-radius:var(--r);display:flex;flex-direction:column;min-height:240px;outline:2px dashed transparent;outline-offset:-3px;transition:outline-color .15s}
+.kcol.over{outline-color:var(--gold)}
+.kh{color:var(--fg);font-weight:800;padding:14px 14px 10px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.kh span:first-child{display:flex;align-items:center;gap:8px}
+.kh span:first-child::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--kc)}
+.kh span:last-child{font-size:12px;font-weight:800;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:2px 9px;font-variant-numeric:tabular-nums}
+.kbody{padding:4px 10px 12px;display:grid;gap:10px;align-content:start;flex:1}
+.kcard{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;gap:8px;cursor:grab;box-shadow:var(--shadow);transition:transform .12s,box-shadow .15s}
+.kcard:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.kcard.dragging{opacity:.4}
+.kcard .tt{font-weight:800;line-height:1.3;font-size:14.5px}
+.kmeta{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.mini{font-size:11.5px;font-weight:700;color:var(--on);border-radius:999px;padding:3px 9px}
+.kmeta:first-child .mini{background:color-mix(in srgb,var(--mc) 14%,transparent)!important;color:var(--fg);font-variant-numeric:tabular-nums}
+.mini.kmini{color:var(--on-k)}
+.kcard .pp{font-size:12.5px;color:var(--muted);margin:0}
+.kmoves{display:flex;justify-content:space-between;gap:4px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:8px}
+.kmoves button{font:700 12px var(--f);background:var(--surface-2);border:1px solid var(--line);color:var(--fg);border-radius:8px;padding:4px 9px;cursor:pointer}
+.kmoves button:hover{border-color:var(--line2)}
+.kmoves button:disabled{visibility:hidden}
+.empty{color:var(--muted);font-size:13px;padding:10px;text-align:center;border:1.5px dashed var(--line2);border-radius:12px}
+
+details.more{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 18px;margin-bottom:12px;box-shadow:var(--shadow)}
+details.more summary{cursor:pointer;font-weight:800}
+details.more ul{margin:10px 0 0;padding-left:20px;display:grid;gap:5px;max-width:90ch}
+footer.sp{height:20px}
+
+/* painel de edição */
+.scrim{position:fixed;inset:0;background:rgba(8,18,12,.45);backdrop-filter:blur(2px);z-index:60}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(480px,100%);background:var(--surface);z-index:61;box-shadow:var(--shadow-lg);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);padding-right:env(safe-area-inset-right,0px);border-radius:20px 0 0 20px;animation:slide .2s ease-out}
+@keyframes slide{from{transform:translateX(24px);opacity:.6}to{transform:none;opacity:1}}
+.dh{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:18px 20px;border-bottom:1px solid var(--line)}
+.dh h2{margin:0;font-size:19px;font-weight:800;letter-spacing:-.01em}
+.dh button{background:var(--surface-2);border:1px solid var(--line);color:var(--fg);font:700 18px var(--f);cursor:pointer;line-height:1;width:34px;height:34px;border-radius:10px}
+.dbody{flex:1;overflow-y:auto;padding:18px 20px;display:grid;gap:14px;align-content:start}
+.fld{display:grid;gap:6px}
+.fld label,.fld .lb{font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.fld input,.fld select,.fld textarea{font:500 14px var(--f);padding:10px 12px;border:1px solid var(--line2);border-radius:10px;background:var(--surface-2);color:var(--fg);width:100%}
+.fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--accent);background:var(--surface)}
+.fld textarea{min-height:96px;resize:vertical}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:420px){.two{grid-template-columns:1fr}}
+.checks{display:flex;flex-wrap:wrap;gap:8px}
+.checks label{display:flex;gap:6px;align-items:center;text-transform:none;font-weight:700;color:var(--fg);letter-spacing:0;font-size:13px;background:var(--surface-2);border:1px solid var(--line2);border-radius:999px;padding:6px 12px;cursor:pointer}
+.hint{font-size:12px;color:var(--muted)}
+.err{font-size:13px;color:var(--late);font-weight:700}
+.err:empty{display:none}
+.dfoot{display:flex;justify-content:space-between;gap:8px;padding:14px 20px;border-top:1px solid var(--line);flex-wrap:wrap}
+.dfoot .r{display:flex;gap:8px}
+.btn-del{background:none;border:1px solid color-mix(in srgb,var(--late) 50%,transparent);color:var(--late);font:700 13px var(--f);border-radius:10px;padding:9px 12px;cursor:pointer}
+.btn-del.confirm{background:var(--late);color:var(--surface)}
+.ro .edit-only{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="boardhead"><div class="wrap">
+  <div class="bh-top">
+    <div><div class="eyebrow">Assessoria de Comunicação · Associação Norte do Pará</div><h1>Pautas Portal <span>2026</span></h1>
+    <p class="sub">Portal de Notícias Adventistas · Calendário “Legado que Ilumina” · meta de 8 matérias por mês</p></div>
+    <div class="save warn" id="saveState">Carregando…</div>
+  </div>
+  <div class="stats" id="stats" aria-live="polite"></div>
+  <div class="seg" role="tablist">
+    <button class="tab" role="tab" id="tabT" aria-selected="true">Tabela</button>
+    <button class="tab" role="tab" id="tabK" aria-selected="false">Kanban</button>
+  </div>
+</div></div>
+
+<div class="wrap">
+  <div class="toolbar">
+    <button class="tb-btn primary edit-only" id="newBtn" type="button">+ Nova pauta</button>
+    <input class="search" id="q" type="search" placeholder="Buscar pauta, departamento ou responsável" aria-label="Buscar">
+    <select class="flt" id="fk" aria-label="Tipo"><option value="all">Todos os tipos</option><option value="i">Igreja</option><option value="c">Comemorativa</option><option value="s">Sugestão</option></select>
+    <select class="flt" id="fp" aria-label="Prioridade"><option value="all">Todas as prioridades</option><option value="A">Alta</option><option value="M">Média</option><option value="B">Baixa</option></select>
+    <select class="flt" id="fper" aria-label="Período"><option value="next">A partir deste mês</option><option value="all">Ano todo</option></select>
+    <button class="tb-btn" id="toggleAll" type="button">Recolher todos</button>
+  </div>
+  <div id="viewT" class="groups"></div>
+  <div id="viewK" class="kscroll" hidden><div class="kboard" id="kboard"></div></div>
+  <details class="more"><summary>Pautas para qualquer mês</summary><ul id="glist"></ul></details>
+  <details class="more"><summary>Para confirmar</summary><ul>
+    <li>Local, horário e departamento responsável de cada evento (o calendário traz só a data).</li>
+    <li>Significado das siglas MAP (15/03) e FE (20 a 22/08) e o departamento de cada uma.</li>
+    <li>Departamento responsável pelo Programa ADORAI (21 a 28/02).</li>
+    <li>Se “UNB” em 14/11 é a União Norte Brasileira e se os 90 anos se referem a ela.</li>
+    <li>Cidades e igrejas de cada Caravana TEM (31/01, 30/05, 29/08, 31/10).</li>
+    <li>Se o Projeto Estrela da Manhã (Luzeiro XXXIII, Barcarena) fica no território da ANPA.</li>
+    <li>Fontes e personagens para as pautas de storytelling.</li>
+  </ul></details>
+  <footer class="sp"></footer>
+</div>
+<div id="drawerHost"></div>
+<script>
+const D=[
+["2026-01-01","2026-01-31","i","Evangelismo das Primícias","Ministério Pessoal","A","F","P,R","Abertura no início do mês e balanço no fim: batismos, decisões e igrejas envolvidas."],
+["2026-01-01",0,"c","Ano Novo","Comunicação","B","N","R","Mensagem da ANPA para 2026 e apresentação do tema “Legado que Ilumina”."],
+["2026-01-03",0,"i","Sábado Missionário – Dia da Esperança","Ministério Pessoal","M","F","P,R","Primeira grande mobilização do ano: o que as igrejas fizeram nas comunidades."],
+["2026-01-12",0,"c","Aniversário de Belém (410 anos)","Comunicação","B","S","R","Presença adventista na história de Belém: igrejas e projetos que marcam a cidade."],
+["2026-01-17",0,"i","Concílio do Ancionato","Liderança","M","F","P","Capacitação dos anciãos: temas, palestrantes e direcionamentos para o ano."],
+["2026-01-18",0,"i","Encontro de Comunicação","Comunicação","A","F","P,R","Formação dos comunicadores das igrejas e apresentação do plano de comunicação 2026."],
+["2026-01-21",0,"c","Dia Nacional de Combate à Intolerância Religiosa","Liberdade Religiosa","M","N","P,I","Nota sobre liberdade de crença e o trabalho do departamento na ANPA."],
+["2026-01-31",0,"i","Sábado da Saúde – Caravana TEM","Saúde","A","F","P,I","Atendimentos gratuitos à comunidade: quantas pessoas, quais serviços e onde."],
+["2026-02-01",0,"i","Capacitação do Diaconato","Liderança","B","F","R","Registro da capacitação e orientações para diáconos e diaconisas."],
+["2026-02-07",0,"i","Dia D do Estudo Bíblico – Semana Santa/MASTER","Ministério Pessoal","A","F","P,R","Mobilização de duplas missionárias para estudos bíblicos rumo à Semana Santa."],
+["2026-02-13","2026-02-17","i","Retiro Espiritual","Ministério Jovem","A","S","P,R","Enquanto o país vive o Carnaval, jovens escolhem o retiro: histórias de quem participou."],
+["2026-02-17",0,"c","Carnaval","Comunicação","B","N","R,I","Contraprogramação: retiros e opções de lazer saudável oferecidas pela igreja."],
+["2026-02-19","2026-02-28","i","10 Dias de Oração e 10 Horas de Jejum","Ministério Pessoal","A","F","P,R","Abertura, encerramento em 28/02 e testemunhos de orações respondidas."],
+["2026-02-21","2026-02-28","i","Programa ADORAI","A confirmar","M","F","R","Registro da programação e participação das igrejas."],
+["2026-03-08",0,"c","Dia Internacional da Mulher","Ministério da Mulher","M","S","P,R","Perfil de mulheres que lideram projetos nas igrejas do Norte do Pará."],
+["2026-03-14",0,"i","Sábado da Igreja Acolhedora","Ministério Pessoal","M","F","R","Como as igrejas recebem visitantes: boas práticas de recepção."],
+["2026-03-15",0,"i","Encontro de Líderes de MAP","A confirmar","B","F","R","Registro do encontro e principais orientações."],
+["2026-03-17",0,"i","Universidade da Escola Sabatina (live)","Escola Sabatina","B","N","R","Divulgação da transmissão e link para assistir."],
+["2026-03-20","2026-03-21","i","Maranata (on-line)","Ministério Jovem","M","N","R","Divulgação e alcance da transmissão."],
+["2026-03-21",0,"i","Dia Mundial do Jovem Adventista","Ministério Jovem","A","F","P,R,I","Ações de serviço dos jovens nas cidades: o que foi feito, onde e com quantos voluntários."],
+["2026-03-22",0,"c","Dia Mundial da Água","ASA","B","N","R","Cuidado com a criação e uso consciente da água."],
+["2026-03-28","2026-04-04","i","Semana Santa – Evangelismo Feminino","Ministério da Mulher","A","F","P","Mulheres pregadoras na Semana Santa: número de locais, pregadoras e participantes."],
+["2026-04-04",0,"i","Final da Semana Santa – Batismo das Duplas","Ministério Pessoal","A","S","P,T","A história de uma dupla missionária e da pessoa que estudou a Bíblia com ela até o batismo."],
+["2026-04-05",0,"c","Páscoa","Comunicação","M","N","P,R","Mensagem sobre a ressurreição de Cristo e a esperança da volta de Jesus."],
+["2026-04-05","2026-04-26","i","Evangelismo MASTER","Ministério Pessoal","M","F","P","Séries evangelísticas em andamento e resultados ao final."],
+["2026-04-07",0,"c","Dia Mundial da Saúde","Saúde","M","F","P,R","Ações de saúde das igrejas locais com os oito remédios naturais: o que é feito e quem é atendido."],
+["2026-04-23",0,"c","Dia Mundial do Livro","Publicações","B","N","R","Livros missionários e o trabalho dos colportores."],
+["2026-05-02",0,"i","Lançamento das Classes Bíblicas da Primavera – Dia D do Estudo Bíblico – Calebe/MASTER","Ministério Pessoal","A","F","P,R","Lançamento das classes e metas de estudos bíblicos para o semestre."],
+["2026-05-03",0,"i","Encontro de Comunicação","Comunicação","M","F","P,R","Segunda formação do ano para comunicadores locais."],
+["2026-05-10",0,"c","Dia das Mães","Ministério da Família","M","S","P,R","Histórias de mães da igreja e programações nas congregações."],
+["2026-05-16",0,"i","Sábado da Criança e Dia Mundial do Aventureiro","Ministério Infantil / Aventureiros","A","F","P,R","Clubes de Aventureiros em ação: atividades, números e fotos das crianças."],
+["2026-05-18",0,"c","Dia Nacional de Combate ao Abuso e à Exploração Sexual de Crianças e Adolescentes","Ministério da Criança / Família","M","N","P,I","Orientação às famílias e canais de denúncia (Disque 100)."],
+["2026-05-22","2026-05-24","i","Encontro de Casais com Cristo (ECC)","Ministério da Família","M","S","P","Depoimento de um casal participante."],
+["2026-05-29","2026-05-31","i","Encontro de Jovens com Cristo (EJC)","Ministério Jovem","M","F","R","Registro do encontro e participação."],
+["2026-05-30",0,"i","Caravana TEM","Saúde","A","F","P,I","Atendimentos gratuitos à comunidade: quantas pessoas, quais serviços e onde."],
+["2026-05-31",0,"c","Dia Mundial sem Tabaco","Saúde","M","N","R,I","Prevenção e programas para deixar de fumar."],
+["2026-06-05",0,"c","Dia Mundial do Meio Ambiente","ASA","B","N","R","Cuidado com a criação e ações ambientais das igrejas e escolas."],
+["2026-06-06",0,"i","Sábado Missionário da Mulher Adventista","Ministério da Mulher","M","F","R","Ações missionárias realizadas pelas mulheres."],
+["2026-06-12","2026-06-14","i","Fim de Semana da Família","Ministério da Família","A","F","P","Tema, programação e participação; gancho com o Dia dos Namorados."],
+["2026-06-12",0,"c","Dia dos Namorados","Ministério da Família","B","N","R","Namoro cristão e divulgação do Curso de Noivos (21/06)."],
+["2026-06-14",0,"i","Vida por Vidas – Dia Mundial do Doador de Sangue","Saúde / Ministério Jovem","A","F","P,I","Bolsas coletadas, voluntários e hemocentros parceiros."],
+["2026-06-19","2026-06-21","i","Congresso do Ministério da Mulher","Ministério da Mulher","A","F","P,T","Tema, preletoras, participantes e principais momentos."],
+["2026-06-21",0,"i","Curso de Noivos","Ministério da Família","B","N","R","Registro e chamada para a próxima turma."],
+["2026-06-27",0,"i","Dia do Ancionato","Liderança","M","S","P","Perfil de um ancião com muitos anos de serviço na igreja local."],
+["2026-07-01","2026-07-05","i","Maranata Norte (AcampJA)","Ministério Jovem","A","F","P,R","Acampamento jovem: tema, participantes, batismos e destaques."],
+["2026-07-01","2026-07-31","i","Missão Calebe e Escola Cristã de Férias","Ministério Jovem / Infantil","A","S","P,T","Diário da Missão Calebe: um voluntário, uma cidade, uma história."],
+["2026-07-11",0,"i","Dia do Colportor","Publicações","M","S","P","Histórias de colportores que levam livros pelo Norte do Pará."],
+["2026-07-18","2026-07-25","i","Semana de Oração JA","Ministério Jovem","M","F","P,R","Abertura, tema e encerramento em 25/07."],
+["2026-07-20",0,"c","Dia do Amigo","Ministério Jovem","B","N","R","Conteúdo leve para redes sobre amizade e convite à igreja."],
+["2026-07-26",0,"c","Dia dos Avós","Ministério da Família","B","S","R","Homenagem a avós da igreja e o legado da fé entre gerações."],
+["2026-08-01",0,"i","Sábado Missionário ASA – Dia D do Estudo Bíblico – Evangelismo MASTER","ASA","M","F","P","Ações sociais da ASA e mobilização de estudos bíblicos."],
+["2026-08-01","2026-08-30","i","Lançamento do Projeto Maná (Dia D em 30/08)","Mordomia Cristã","M","F","P","Lançamento do projeto e mobilização das igrejas até o Dia D."],
+["2026-08-07",0,"c","Lei Maria da Penha – 20 anos","Ministério da Mulher","A","N","P,I","Nota e gancho para o Quebrando o Silêncio de 22/08."],
+["2026-08-09",0,"c","Dia dos Pais","Ministério da Família","M","S","P,R","Histórias de pais da igreja e programações nas congregações."],
+["2026-08-12",0,"c","Dia Internacional da Juventude","Ministério Jovem","B","N","R","Números e ações do Ministério Jovem no ano."],
+["2026-08-20","2026-08-22","i","Encontro Nacional da FE","A confirmar","M","F","P","Participação da delegação da ANPA."],
+["2026-08-22",0,"i","Projeto Quebrando o Silêncio","Ministério da Mulher","A","F","P,I","Caminhadas, palestras e parcerias com a rede de proteção nas cidades."],
+["2026-08-29",0,"i","Caravana TEM","Saúde","A","F","P,I","Atendimentos gratuitos à comunidade: quantas pessoas, quais serviços e onde."],
+["2026-09-01",0,"c","Setembro Amarelo","Saúde","M","N","P,R","Valorização da vida e saúde emocional, com indicação do CVV (188)."],
+["2026-09-19",0,"i","Dia Mundial do Desbravador","Desbravadores","A","F","P,R,I","Desfiles e ações dos clubes: números, cidades e imagens."],
+["2026-09-19","2026-09-26","i","Semana da Esperança","Ministério Pessoal","A","F","P","Programação nas igrejas e convidados alcançados."],
+["2026-09-21",0,"c","Dia da Árvore","Desbravadores / ASA","B","N","R","Plantio de mudas e cuidado com a criação."],
+["2026-09-26",0,"i","Batismo da Primavera","Ministério Pessoal","A","S","P,T","A história de um batizando e de quem o acompanhou nos estudos."],
+["2026-10-01",0,"c","Outubro Rosa e Dia Nacional do Idoso","Saúde / Família","B","N","R","Prevenção do câncer de mama e valorização dos idosos da igreja."],
+["2026-10-03",0,"i","Sábado da Educação Adventista","Educação","A","F","P","Escolas adventistas da região: matrículas, projetos e testemunhos."],
+["2026-10-10",0,"i","Aniversário da Escola Sabatina","Escola Sabatina","M","N","P","História da Escola Sabatina e números na ANPA."],
+["2026-10-12",0,"c","Dia das Crianças","Ministério Infantil","M","N","R","Programações para as crianças nas igrejas."],
+["2026-10-15",0,"c","Dia do Professor","Educação","M","S","P,R","Perfil de um professor da rede adventista."],
+["2026-10-17",0,"i","Sábado Impacto Esperança","Ministério Pessoal / Publicações","A","F","P,I","Distribuição de livros nas cidades: quantidade, locais e voluntários."],
+["2026-10-18","2026-10-31","i","Evangelismo MASTER","Ministério Pessoal","M","F","P","Séries evangelísticas em andamento e resultados ao final."],
+["2026-10-24",0,"i","Dia do Pastor e das Vocações Ministeriais – Sábado da Criação","Liderança","A","S","P","Homenagem aos pastores: a trajetória de um pastor do campo."],
+["2026-10-31",0,"i","Mordomia Cristã – Caravana TEM","Saúde","A","F","P,I","Atendimentos gratuitos à comunidade: quantas pessoas, quais serviços e onde."],
+["2026-10-31",0,"c","Dia da Reforma Protestante","Comunicação","M","N","P,R","A herança da Reforma e o lugar da Bíblia na fé adventista."],
+["2026-11-01",0,"c","Novembro Azul","Saúde","B","N","R","Saúde do homem e prevenção do câncer de próstata."],
+["2026-11-06","2026-11-08","i","Encontro de Casais com Cristo (ECC)","Ministério da Família","M","S","P","Depoimento de um casal participante."],
+["2026-11-07",0,"i","Dia do Espírito de Profecia","Escola Sabatina / Publicações","M","N","P","O legado de Ellen G. White e os livros mais lidos na região."],
+["2026-11-14",0,"i","Mordomia Cristã – Celebração dos 90 anos da UNB","Administração","A","F","P,T,I","Celebração dos 90 anos: história e presença da igreja no Norte."],
+["2026-11-20",0,"c","Dia da Consciência Negra","Comunicação","B","N","R","Feriado nacional; conteúdo sobre dignidade e igualdade."],
+["2026-11-26",0,"c","Dia de Ação de Graças","Mordomia Cristã","M","N","R","Gratidão a Deus e testemunhos de fidelidade."],
+["2026-11-27","2026-11-29","i","Encontro de Jovens com Cristo (EJC)","Ministério Jovem","M","F","R","Registro do encontro e participação."],
+["2026-11-29",0,"i","Curso de Noivos","Ministério da Família","B","N","R","Registro e chamada para a próxima turma."],
+["2026-11-30",0,"c","Dia Nacional do Evangélico","Comunicação","M","N","P,I","Nota institucional e presença adventista no Pará."],
+["2026-12-10",0,"c","Dia dos Direitos Humanos","Liberdade Religiosa","B","N","R","Liberdade religiosa como direito humano; gancho para o encontro de 12/12."],
+["2026-12-12",0,"i","Encontro de Ancionato – Liberdade Religiosa","Liberdade Religiosa","M","F","P","Capacitação dos anciãos sobre liberdade religiosa."],
+["2026-12-13",0,"c","Dia da Bíblia","Escola Sabatina / Publicações","M","N","P,R","Distribuição de Bíblias e incentivo à leitura."],
+["2026-12-19",0,"i","Programa “Mutirão de Natal”","ASA","A","F","P,I","Arrecadação e entrega: cestas, brinquedos e famílias atendidas."],
+["2026-12-25",0,"c","Natal","Comunicação","M","N","P,R","Mensagem de Natal da liderança da ANPA."],
+["2026-12-31",0,"c","Retrospectiva 2026","Comunicação","A","S","P,R","Os principais momentos do ano “Legado que Ilumina”."]
+];
+const E=[
+{"m":2,"tema":"Volta às aulas na Educação Adventista","f":"F","dept":"Educação","ang":"Primeiro dia de aula nas escolas da região: novidades do ano, número de alunos e o que muda para as famílias.","fontes":"Direção das escolas, pais e alunos"},
+{"m":2,"tema":"Provas e concursos no sábado: o que diz a lei","f":"N","dept":"Liberdade Religiosa","ang":"Texto de serviço sobre a Lei 13.796/2019, que garante alternativa a estudantes que guardam o sábado, com orientação de como pedir.","fontes":"Departamento de Liberdade Religiosa, advogado membro"},
+{"m":2,"tema":"A igreja no Norte do Pará em números","f":"F","dept":"Administração","ang":"Balanço de 2025: batismos, novas igrejas e grupos, membros e escolas. Bom material para infográfico.","fontes":"Secretaria da ANPA"},
+{"m":2,"tema":"ASA no período de chuvas","f":"F","dept":"ASA","ang":"Como a ASA se prepara para atender famílias atingidas por cheias e alagamentos no inverno amazônico.","fontes":"Diretor da ASA, voluntários"},
+{"m":3,"tema":"Por dentro de um Pequeno Grupo","f":"S","dept":"Ministério Pessoal","ang":"Uma noite em um Pequeno Grupo de bairro: quem participa, como começou e quem já foi batizado a partir dele.","fontes":"Líder do PG, participantes"},
+{"m":3,"tema":"Igreja Acolhedora na prática","f":"S","dept":"Ministério Pessoal","ang":"A história de alguém que voltou ou chegou à igreja porque foi bem recebido. Gancho com o Sábado da Igreja Acolhedora (14/03).","fontes":"Recepcionistas, visitante que ficou"},
+{"m":3,"tema":"Pioneiras da igreja no Norte do Pará","f":"S","dept":"Ministério da Mulher","ang":"Mulheres que abriram igrejas, escolas ou Pequenos Grupos na região. Fecha o mês da mulher.","fontes":"Membros antigos, histórico das igrejas"},
+{"m":4,"tema":"Luzeiro: 95 anos das lanchas missionárias","f":"S","dept":"Saúde / Comunicação","ang":"Do Luzeiro I (1931), de Leo e Jessie Halliwell, ao Luzeiro XXXIII lançado em 2026. A lancha está na arte do calendário “Legado que Ilumina”.","fontes":"Hospital Adventista de Belém, Projeto Estrela da Manhã, acervo histórico"},
+{"m":4,"tema":"Estudantes que pagam a faculdade com livros","f":"S","dept":"Publicações","ang":"Colportores estudantes da região e o que os livros abriram na vida deles. Gancho com o Dia Mundial do Livro (23/04).","fontes":"Departamento de Publicações, colportores"},
+{"m":4,"tema":"Quem prega no Evangelismo MASTER","f":"S","dept":"Ministério Pessoal","ang":"Perfil de um pregador leigo da série de abril: profissão, preparo e resultados.","fontes":"Pregador, pastor distrital"},
+{"m":6,"tema":"Casais que se conheceram na igreja","f":"S","dept":"Ministério da Família","ang":"Histórias de casais de diferentes gerações. Gancho com o Dia dos Namorados e o Fim de Semana da Família.","fontes":"Casais, Ministério da Família"},
+{"m":6,"tema":"Igrejas e escolas que cuidam do meio ambiente","f":"F","dept":"ASA / Educação","ang":"Reciclagem, hortas, plantio e limpeza de igarapés feitos por igrejas e escolas. Gancho com 05/06.","fontes":"Escolas, clubes, ASA"},
+{"m":6,"tema":"Um clube de Desbravadores na comunidade","f":"S","dept":"Desbravadores","ang":"O que um clube faz pelo bairro além das reuniões, contado por um desbravador e por um vizinho.","fontes":"Diretor do clube, desbravadores, comunidade"},
+{"m":7,"tema":"Escola Cristã de Férias por dentro","f":"F","dept":"Ministério Infantil","ang":"Quantas crianças, quantas da comunidade e o que elas levam para casa.","fontes":"Coordenadoras, pais"},
+{"m":7,"tema":"A fé que passa dos avós aos netos","f":"S","dept":"Ministério da Família","ang":"Três gerações de uma família adventista. Gancho com o Dia dos Avós (26/07).","fontes":"Família entrevistada"},
+{"m":7,"tema":"A igreja nas ilhas e beira de rio","f":"S","dept":"Ministério Pessoal","ang":"Como membros ribeirinhos chegam ao culto e como a igreja chega até eles no verão amazônico.","fontes":"Pastor distrital, membros ribeirinhos"},
+{"m":9,"tema":"Matrículas 2027 na Educação Adventista","f":"N","dept":"Educação","ang":"Período de matrícula, documentos e bolsas, com um depoimento de família.","fontes":"Secretarias escolares"},
+{"m":9,"tema":"Saúde emocional: o que a igreja oferece","f":"F","dept":"Saúde","ang":"Grupos de apoio, escuta e orientação nas igrejas, com fala de um profissional de saúde. Sempre indicar o CVV (188).","fontes":"Psicólogo ou médico membro, Ministério da Saúde"},
+{"m":9,"tema":"Décadas no Clube de Desbravadores","f":"S","dept":"Desbravadores","ang":"Um líder com muitos anos de clube e os jovens que ele formou. Gancho com o Dia Mundial do Desbravador (19/09).","fontes":"Líder, ex-desbravadores"},
+{"m":11,"tema":"O que ficou do Evangelismo MASTER de outubro","f":"F","dept":"Ministério Pessoal","ang":"Resultados consolidados: locais, pregadores, batismos e interessados em estudo bíblico.","fontes":"Ministério Pessoal, pastores distritais"},
+{"m":11,"tema":"As igrejas mais antigas da ANPA","f":"S","dept":"Administração","ang":"Série histórica em diálogo com os 90 anos da UNB: como começou a obra em cidades da região.","fontes":"Membros antigos, atas e fotos de igrejas"},
+{"m":11,"tema":"Formaturas nas escolas adventistas","f":"F","dept":"Educação","ang":"Turmas que concluem o ano, com destaque para um aluno ou professor.","fontes":"Escolas"},
+{"m":11,"tema":"Gratidão em ano difícil","f":"S","dept":"Mordomia Cristã","ang":"Testemunho de fidelidade e gratidão. Gancho com o Dia de Ação de Graças (26/11).","fontes":"Membro entrevistado, Mordomia Cristã"},
+{"m":12,"tema":"Batismos de 2026 em números","f":"F","dept":"Administração","ang":"Total do ano por projeto (Primícias, Semana Santa, Primavera, MASTER) e por região.","fontes":"Secretaria da ANPA"},
+{"m":12,"tema":"Natal solidário: uma família atendida","f":"S","dept":"ASA","ang":"A história de uma família ajudada pelo Mutirão de Natal, contada com respeito à privacidade.","fontes":"Voluntários da ASA, família"},
+{"m":12,"tema":"O que vem em 2027","f":"N","dept":"Administração","ang":"Principais datas e projetos do calendário 2027, quando for divulgado.","fontes":"Administração da ANPA"}
+];
+const G=["Série “Histórias que Iluminam” em texto: cada episódio em vídeo pode virar uma matéria de storytelling.","Perfil do membro mais antigo de uma igreja: memória da obra na cidade.","“Por dentro do departamento”: uma matéria por mês apresentando um ministério e seus números.","Pautas enviadas por pastores e líderes no Banco de Pautas, usadas para completar as semanas sem evento.","Infográficos com dados da ANPA: batismos, escolas, clubes, igrejas."];
+const ST=[["todo","A pautar","var(--s-todo)"],["pre","Pré-pauta","var(--s-pre)"],["prod","Em produção","var(--s-prod)"],["pub","Publicada","var(--s-pub)"],["nf","Não feita","var(--late)"]];
+const STM=Object.fromEntries(ST.map(s=>[s[0],s]));
+const MES=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+const GC=["#1d5a40","#a67c26","#2f6b4f","#8a6a22","#123d2b","#b08530","#3d7a5c","#97762b","#245038","#a67c26","#1d5a40","#8a6a22"];
+const SEM=["dom","seg","ter","qua","qui","sex","sáb"];
+const FMT={F:"Cobertura factual",S:"Storytelling",N:"Nota institucional"};
+const CH={P:"Portal",R:"Redes",I:"Imprensa",T:"Novo Tempo"};
+const PR={A:["Alta","var(--p-A)"],M:["Média","var(--p-M)"],B:["Baixa","var(--p-B)"]};
+const KIND={i:["Igreja","var(--k-i)"],c:["Comemorativa","var(--k-c)"],s:["Sugestão","var(--k-s)"]};
+const DEPTS=["Administração","ASA","Aventureiros","Comunicação","Desbravadores","Educação","Escola Sabatina","Liberdade Religiosa","Liderança","Ministério da Família","Ministério da Mulher","Ministério Infantil","Ministério Jovem","Ministério Pessoal","Mordomia Cristã","Música","Publicações","Saúde"];
+const FIELDS=["title","k","m","s","e","dept","p","f","ch","pauta","fontes","resp","link"];
+const dt=s=>s?new Date(s+"T12:00:00"):null;
+const add=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const fm=d=>String(d.getDate()).padStart(2,"0")+"/"+String(d.getMonth()+1).padStart(2,"0");
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const slug=s=>s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,60);
+const okUrl=u=>/^https?:\/\/[^\s]+\.[^\s]+/i.test(u||"");
+const now=new Date();now.setHours(12,0,0,0);
+
+// pautas de base (do calendário) — edições e novas pautas ficam salvas no quadro
+const base={};
+D.forEach(r=>{const ch=r[7].split(",");if(!ch.includes("P"))return;const id=r[0]+"-"+slug(r[3]);
+  base[id]={id,title:r[3],k:r[2],m:+r[0].slice(5,7)-1,s:r[0],e:r[1]||"",dept:r[4],p:r[5],f:r[6],ch,pauta:r[8],fontes:"",resp:"",link:""}});
+E.forEach(x=>{const id="sug-"+x.m+"-"+slug(x.tema);base[id]={id,title:x.tema,k:"s",m:x.m-1,s:"",e:"",dept:x.dept,p:"M",f:x.f,ch:["P"],pauta:x.ang,fontes:x.fontes,resp:"",link:""}});
+let over={},status={},db=null,canWrite=true,view="T";
+function items(){const out=[];const ids=new Set([...Object.keys(base),...Object.keys(over)]);
+  ids.forEach(id=>{const b=base[id],o=over[id];if(o&&o.deleted)return;if(!b&&!o)return;const it={...(b||{id,title:"",k:"i",m:0,s:"",e:"",dept:"",p:"M",f:"F",ch:["P"],pauta:"",fontes:"",resp:"",link:""}),...(o||{}),id};
+    it.sd=dt(it.s);it.ed=it.e?dt(it.e):it.sd;if(it.sd)it.m=it.sd.getMonth();it.custom=!b;out.push(it)});
+  return out.sort((a,b)=>(a.m-b.m)||((a.sd?+a.sd:9e15)-(b.sd?+b.sd:9e15))||a.title.localeCompare(b.title))}
+const open=new Set(),expanded=new Set();
+for(let m=now.getMonth();m<12;m++)open.add(m);
+const f={q:"",k:"all",p:"all",per:"next"};
+const saveEl=document.getElementById("saveState");
+const setSave=(t,warn)=>{saveEl.textContent=t;saveEl.classList.toggle("warn",!!warn)};
+const INICIAL={"status": {"2026-10-03-sabado-da-educacao-adventista": "nf", "2026-10-10-aniversario-da-escola-sabatina": "nf", "2026-10-15-dia-do-professor": "nf", "2026-10-17-sabado-impacto-esperanca": "pub", "2026-10-18-evangelismo-master": "nf", "2026-10-31-dia-da-reforma-protestante": "pub", "2026-11-07-dia-do-espirito-de-profecia": "nf", "2026-11-14-mordomia-crista-celebracao-dos-90-anos-da-unb": "pub", "n-mvpw9nibsx97": "pub", "n-mwjmwyf20hnm": "pub"}, "over": {"2026-10-18-evangelismo-master": {"at": "2026-10-27T00:10:51.790Z", "ch": ["P"], "dept": "Ministério Pessoal", "e": "2026-10-31", "f": "F", "fontes": "", "k": "i", "link": "", "m": 9, "p": "B", "pauta": "Séries evangelísticas em andamento e resultados ao final.", "resp": "", "s": "2026-10-18", "title": "Evangelismo MASTER"}, "2026-10-31-dia-da-reforma-protestante": {"at": "2026-10-30T15:52:54.535Z", "ch": ["P", "R"], "dept": "Comunicação", "e": "", "f": "N", "fontes": "", "k": "c", "link": "https://noticias.adventistas.org/pt/reforma-protestante-31-10-26/", "m": 9, "p": "M", "pauta": "A herança da Reforma e o lugar da Bíblia na fé adventista.", "resp": "Everton Ferreira", "s": "2026-10-30", "title": "Dia da Reforma Protestante"}, "2026-11-06-encontro-de-casais-com-cristo-ecc": {"at": "2026-11-16T19:08:19.215Z", "deleted": true}, "2026-11-14-mordomia-crista-celebracao-dos-90-anos-da-unb": {"at": "2026-11-16T19:06:20.701Z", "ch": ["P"], "dept": "Administração", "e": "2026-11-14", "f": "F", "fontes": "", "k": "c", "link": "https://noticias.adventistas.org/pt/fortes-na-palavra/", "m": 10, "p": "A", "pauta": "Celebração dos 90 anos: história e presença da igreja no Norte.", "resp": "Everton Ferreira", "s": "2026-11-14", "title": "Livro “Fortes na Palavra” resgata 90 anos de história da Igreja Adventista no Norte do Brasil"}, "n-mvpw9nibsx97": {"at": "2026-10-26T23:36:29.393Z", "ch": ["P"], "dept": "Saúde", "e": "", "f": "F", "fontes": "", "k": "i", "link": "https://noticias.adventistas.org/pt/outubro-rosa/", "m": 9, "p": "M", "pauta": "Outubro Rosa", "resp": "Everton Ferreira", "s": "2026-10-26", "title": "Ação social oferece cuidados gratuitos a mulheres em alusão ao Outubro Rosa"}, "n-mwjmwyf20hnm": {"at": "2026-11-16T19:07:58.495Z", "ch": ["P"], "dept": "Comunicação", "e": "2026-11-16", "f": "N", "fontes": "", "k": "i", "link": "https://noticias.adventistas.org/pt/xix-assembleia-anpa-2026/", "m": 10, "p": "M", "pauta": "Assembleia Ordinária ANPa", "resp": "Everton Ferreira", "s": "2026-11-16", "title": "Associação Norte do Pará realiza 19ª Assembleia Ordinária nos dias 21 e 22 de novembro"}}};
+function loadLocal(){status={...INICIAL.status};over=JSON.parse(JSON.stringify(INICIAL.over));try{const v=JSON.parse(localStorage.getItem("anpa-board")||"null");if(v){status=v.status||{};over=v.over||{}}}catch(e){}}
+function saveLocal(){try{localStorage.setItem("anpa-board",JSON.stringify({status,over}))}catch(e){}}
+const stOf=i=>status[i.id]||"todo";
+function vis(i){if(f.per==="next"&&i.m<now.getMonth())return false;if(f.k!=="all"&&i.k!==f.k)return false;if(f.p!=="all"&&i.p!==f.p)return false;
+  if(f.q){const q=f.q.toLowerCase();if(!(i.title+" "+i.dept+" "+i.pauta+" "+(i.resp||"")).toLowerCase().includes(q))return false}return true}
+function due(i){const s=stOf(i);if(s==="nf")return{t:"Não realizada",c:""};if(s==="pub")return i.link?{t:"Publicada ✓",c:"ok"}:{t:"Publicada · falta o link",c:"late"};if(!i.sd)return{t:"Sem data fixa",c:""};
+  const pub=i.f==="N"?i.sd:add(i.ed,2),pre=i.f==="N"?add(i.sd,-3):add(i.sd,-10);
+  if(pub<now&&pub.toDateString()!==now.toDateString())return{t:"Atrasada · "+fm(pub),c:"late"};
+  if(s==="todo"&&pre<now)return{t:"Pré-pauta vencida · "+fm(pub),c:"late"};
+  return{t:"Publicar até "+fm(pub),c:""}}
+const dateTxt=i=>i.sd?fm(i.sd)+(i.ed>i.sd?" – "+fm(i.ed):""):"";
+function battery(list){if(!list.length)return"";return`<div class="battery" title="Andamento do grupo">${ST.map(([k,l,c])=>{const n=list.filter(i=>stOf(i)===k).length;return n?`<span style="width:${n/list.length*100}%;background:${c}" title="${l}: ${n}"></span>`:""}).join("")}</div>`}
+const linkCell=i=>i.link&&okUrl(i.link)?`<a class="lnk" href="${esc(i.link)}" target="_blank" rel="noopener">Abrir matéria ↗</a>`:`<button class="addlink edit-only" type="button" data-edit="${i.id}" data-focus="link">+ Link</button>`;
+function renderTable(all){const V=document.getElementById("viewT");let out="";
+  for(let m=0;m<12;m++){if(f.per==="next"&&m<now.getMonth())continue;const list=all.filter(i=>i.m===m&&vis(i));
+    const filtered=f.q||f.k!=="all"||f.p!=="all";if(!list.length&&filtered)continue;
+    const isOpen=open.has(m),pc=all.filter(i=>i.m===m&&i.k!=="s").length,pub=all.filter(i=>i.m===m&&stOf(i)==="pub").length,hasSug=all.some(i=>i.m===m&&i.k==="s");
+    out+=`<section class="group${isOpen?"":" closed"}" style="--g:${GC[m]}"><div class="gh"><button type="button" data-g="${m}" aria-expanded="${isOpen}"><span class="chev">▼</span>${MES[m]}</button><span class="cnt">${list.length} ${list.length===1?"pauta":"pautas"}</span>${hasSug&&pc<8?`<span class="flag">Mês com poucas pautas</span>`:""}<div class="gprog">${battery(all.filter(i=>i.m===m))||'<div class="battery"></div>'}<span class="pct">${pub} de 8 publicadas</span></div></div>`;
+    if(isOpen){out+=`<div class="tscroll"><table><thead><tr><th class="datecol">Data</th><th class="name">Pauta</th><th class="col-status">Status</th><th class="col-prio">Prioridade</th><th class="col-link">Matéria</th><th class="col-resp">Responsável</th><th class="col-fmt">Formato</th><th class="col-kind">Tipo</th><th class="col-dept">Departamento</th><th class="col-due">Prazo</th></tr></thead><tbody>`;
+      list.forEach(i=>{const s=STM[stOf(i)],d=due(i),x=expanded.has(i.id);
+        out+=`<tr class="item"><td class="datecol">${i.sd?`<span class="datec">${dateTxt(i)}<small style="font-weight:600;color:var(--muted);font-size:11px">${SEM[i.sd.getDay()]}</small></span>`:'<span class="datec none">Livre no mês</span>'}</td><td class="name"><div class="nm"><span class="tt">${esc(i.title)}</span><button class="exp" type="button" data-x="${i.id}" aria-expanded="${x}">${x?"Fechar":"Ver"}</button><button class="exp edit-only" type="button" data-edit="${i.id}">Editar</button></div></td>
+<td><button class="pill" type="button" data-st="${i.id}" style="background:${s[2]}" aria-label="Status: ${s[1]}. Alterar">${s[1]}</button></td>
+<td><button class="pill" type="button" data-pr="${i.id}" style="background:${PR[i.p][1]}" aria-label="Prioridade: ${PR[i.p][0]}. Alterar">${PR[i.p][0]}</button></td>
+<td>${linkCell(i)}</td>
+<td class="txt">${esc(i.resp)||'<span style="color:var(--muted)">—</span>'}</td>
+<td class="txt">${FMT[i.f]}</td>
+<td class="txt"><span class="kind" style="--kc:${KIND[i.k][1]}"><i></i>${KIND[i.k][0]}</span></td>
+<td class="txt">${esc(i.dept)}</td>
+<td class="txt"><span class="due ${d.c}">${d.t}</span></td></tr>`;
+        if(x)out+=`<tr class="detail"><td colspan="10"><div class="dgrid"><div><b>Ângulo:</b> ${esc(i.pauta)||"—"}</div>${i.fontes?`<div><b>Fontes:</b> ${esc(i.fontes)}</div>`:""}${i.sd?`<div><b>Dia:</b> ${SEM[i.sd.getDay()]}, ${dateTxt(i)} · <b>${i.f==="N"?"Preparar até":"Pré-pauta"}:</b> ${fm(i.f==="N"?add(i.sd,-3):add(i.sd,-10))}${i.f!=="N"?` · <b>Divulgação:</b> ${fm(add(i.sd,-7))}`:""}</div>`:""}<div><b>Canais:</b> ${(i.ch||[]).map(c=>CH[c]).join(", ")}</div>${i.link?`<div><b>Matéria:</b> ${okUrl(i.link)?`<a class="lnk" href="${esc(i.link)}" target="_blank" rel="noopener">${esc(i.link)}</a>`:esc(i.link)}</div>`:""}</div></td></tr>`});
+      out+=`<tr class="addrow edit-only"><td colspan="10"><button type="button" data-new="${m}">+ Adicionar pauta em ${MES[m]}</button></td></tr>`;
+      out+=`</tbody></table></div>`}
+    out+=`</section>`}
+  V.innerHTML=out||'<div class="empty">Nenhuma pauta com esses filtros.</div>';
+  document.getElementById("toggleAll").textContent=open.size?"Recolher todos":"Expandir todos"}
+function renderKanban(all){const K=document.getElementById("kboard");const list=all.filter(vis);
+  K.innerHTML=ST.map(([k,l,c],ci)=>{const its=list.filter(i=>stOf(i)===k);return`<section class="kcol" data-col="${k}"><div class="kh" style="--kc:${c}"><span>${l}</span><span>${its.length}</span></div><div class="kbody">${its.length?its.map(i=>{const d=due(i);return`<article class="kcard" draggable="${canWrite}" data-id="${i.id}"><div class="kmeta"><span class="mini" style="--mc:${GC[i.m]}">${i.sd?dateTxt(i)+" · "+SEM[i.sd.getDay()]:MES[i.m]+" · sem data fixa"}</span></div><div class="tt">${esc(i.title)}</div><div class="kmeta"><button type="button" class="mini" data-pr="${i.id}" style="background:${PR[i.p][1]};border:0;cursor:pointer;font-family:var(--f)" aria-label="Prioridade: ${PR[i.p][0]}. Alterar">${PR[i.p][0]} ▾</button><span class="mini kmini" style="background:${KIND[i.k][1]}">${KIND[i.k][0]}</span></div><p class="pp">${FMT[i.f]} · ${esc(i.dept)}${i.resp?" · "+esc(i.resp):""}</p><span class="due ${d.c}">${d.t}</span>${i.link&&okUrl(i.link)?`<a class="lnk" href="${esc(i.link)}" target="_blank" rel="noopener">Abrir matéria ↗</a>`:""}<div class="kmoves edit-only"><button type="button" data-mv="-1" data-id="${i.id}" ${ci===0?"disabled":""}>← ${ci>0?ST[ci-1][1]:""}</button><button type="button" data-edit="${i.id}">Editar</button><button type="button" data-mv="1" data-id="${i.id}" ${ci===ST.length-1?"disabled":""}>${ci<ST.length-1?ST[ci+1][1]:""} →</button></div></article>`}).join(""):'<div class="empty">Nenhuma pauta aqui.</div>'}</div></section>`}).join("")}
+function renderStats(all){const S=document.getElementById("stats");if(!S)return;
+  const n=k=>all.filter(i=>stOf(i)===k).length;const late=all.filter(i=>due(i).c==="late").length;
+  const cm=now.getMonth(),pubM=all.filter(i=>i.m===cm&&stOf(i)==="pub").length;
+  S.innerHTML=`<div class="stat"><span class="v">${all.length}</span><span class="l">pautas no quadro</span></div>
+<div class="stat"><span class="v">${n("pub")}</span><span class="l">publicadas no ano</span></div>
+<div class="stat"><span class="v">${n("pre")+n("prod")}</span><span class="l">em pré-pauta ou produção</span></div>
+<div class="stat${late?" late":""}"><span class="v">${late}</span><span class="l">com prazo vencido</span></div>
+<div class="stat"><span class="v">${pubM}<small style="font-size:14px;font-weight:700;opacity:.7"> / 8</small></span><span class="l">publicadas em ${MES[cm].toLowerCase()}</span><div class="bar"><span style="width:${Math.min(pubM/8,1)*100}%"></span></div></div>`}
+function render(){document.body.classList.toggle("ro",!canWrite);const all=items();renderStats(all);view==="T"?renderTable(all):renderKanban(all)}
+
+async function writeDoc(coll,id,data,rollback){
+  if(db){setSave("Salvando…",true);try{await db.collection(coll).doc(id).set(data);setSave("Salvo");return true}catch(e){rollback();render();setSave(e&&e.code==="permission_denied"?"Você não tem permissão para editar este quadro.":"Não foi possível salvar. Tente de novo.",true);return false}}
+  saveLocal();setSave("Salvo neste navegador",true);return true}
+async function setStatus(id,col){const prev=status[id];if((prev||"todo")===col)return;status[id]=col;render();
+  const ok=await writeDoc("status",id,{col,at:new Date().toISOString()},()=>{if(prev)status[id]=prev;else delete status[id]});
+  if(ok&&col==="pub"){const it=items().find(x=>x.id===id);if(it&&!it.link)openDrawer(id,"link")}}
+
+async function setPrio(id,p){const it=items().find(x=>x.id===id);if(!it||it.p===p)return;const prev=over[id];
+  const rec={};FIELDS.forEach(k=>rec[k]=it[k]);rec.p=p;rec.at=new Date().toISOString();over[id]=rec;render();
+  await writeDoc("pautas",id,rec,()=>{if(prev)over[id]=prev;else delete over[id]})}
+// painel de edição
+let editing=null,delArmed=false;
+function openDrawer(id,focusField,month){closePop();delArmed=false;
+  const cur=id?items().find(x=>x.id===id):null;
+  const it=cur||{id:"n-"+Date.now().toString(36)+Math.random().toString(36).slice(2,6),title:"",k:"i",m:month??now.getMonth(),s:"",e:"",dept:"",p:"M",f:"F",ch:["P"],pauta:"",fontes:"",resp:"",link:""};
+  editing={id:it.id,isNew:!cur,custom:cur?cur.custom:true};
+  const H=document.getElementById("drawerHost");
+  H.innerHTML=`<div class="scrim" id="scrim"></div><aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="dTitle">
+<div class="dh"><h2 id="dTitle">${cur?"Editar pauta":"Nova pauta"}</h2><button type="button" id="dClose" aria-label="Fechar">×</button></div>
+<form class="dbody" id="dForm" novalidate>
+<div class="fld"><label for="f_title">Título da pauta</label><input id="f_title" value="${esc(it.title)}" required></div>
+<div class="fld"><label for="f_link">Link da matéria publicada</label><input id="f_link" type="url" inputmode="url" placeholder="https://noticias.adventistas.org/..." value="${esc(it.link)}"><span class="hint">Cole o endereço da matéria no Portal depois de publicada.</span></div>
+<div class="two"><div class="fld"><label for="f_status">Status</label><select id="f_status">${ST.map(([k,l])=>`<option value="${k}" ${(status[it.id]||"todo")===k?"selected":""}>${l}</option>`).join("")}</select></div>
+<div class="fld"><label for="f_resp">Responsável</label><input id="f_resp" value="${esc(it.resp)}" placeholder="Nome de quem produz"></div></div>
+<div class="two"><div class="fld"><label for="f_s">Data</label><input id="f_s" type="date" min="2026-01-01" max="2026-12-31" value="${esc(it.s)}"></div>
+<div class="fld"><label for="f_e">Até (opcional)</label><input id="f_e" type="date" min="2026-01-01" max="2026-12-31" value="${esc(it.e)}"></div></div>
+<div class="fld"><label for="f_m">Mês (para pautas sem data fixa)</label><select id="f_m">${MES.map((m,i)=>`<option value="${i}" ${it.m===i?"selected":""}>${m}</option>`).join("")}</select></div>
+<div class="two"><div class="fld"><label for="f_k">Tipo</label><select id="f_k">${Object.entries(KIND).map(([k,v])=>`<option value="${k}" ${it.k===k?"selected":""}>${v[0]}</option>`).join("")}</select></div>
+<div class="fld"><label for="f_p">Prioridade</label><select id="f_p">${Object.entries(PR).map(([k,v])=>`<option value="${k}" ${it.p===k?"selected":""}>${v[0]}</option>`).join("")}</select></div></div>
+<div class="two"><div class="fld"><label for="f_f">Formato</label><select id="f_f">${Object.entries(FMT).map(([k,v])=>`<option value="${k}" ${it.f===k?"selected":""}>${v}</option>`).join("")}</select></div>
+<div class="fld"><label for="f_dept">Departamento</label><input id="f_dept" list="deptList" value="${esc(it.dept)}"><datalist id="deptList">${DEPTS.map(d=>`<option value="${d}">`).join("")}</datalist></div></div>
+<div class="fld"><span class="lb">Canais</span><div class="checks">${Object.entries(CH).map(([k,v])=>`<label><input type="checkbox" id="f_ch_${k}" value="${k}" ${(it.ch||[]).includes(k)?"checked":""}> ${v}</label>`).join("")}</div></div>
+<div class="fld"><label for="f_pauta">Ângulo da pauta</label><textarea id="f_pauta">${esc(it.pauta)}</textarea></div>
+<div class="fld"><label for="f_fontes">Fontes</label><input id="f_fontes" value="${esc(it.fontes)}"></div>
+<div class="err" id="dErr" role="alert"></div>
+</form>
+<div class="dfoot">${cur?`<button type="button" class="btn-del" id="dDel">${editing.custom?"Excluir pauta":"Remover do quadro"}</button>`:"<span></span>"}<div class="r"><button type="button" class="tb-btn" id="dCancel">Cancelar</button><button type="button" class="tb-btn primary" id="dSave">Salvar</button></div></div>
+</aside>`;
+  const close=()=>{H.innerHTML="";editing=null};
+  document.getElementById("scrim").onclick=close;document.getElementById("dClose").onclick=close;document.getElementById("dCancel").onclick=close;
+  document.getElementById("dForm").onsubmit=e=>{e.preventDefault();save()};
+  document.getElementById("dSave").onclick=save;
+  const del=document.getElementById("dDel");if(del)del.onclick=async()=>{if(!delArmed){delArmed=true;del.classList.add("confirm");del.textContent="Confirmar: clique de novo";return}
+    const id=editing.id,prev=over[id];over[id]={deleted:true,at:new Date().toISOString()};close();render();
+    await writeDoc("pautas",id,over[id],()=>{if(prev)over[id]=prev;else delete over[id]})};
+  (document.getElementById("f_"+(focusField||"title"))||document.getElementById("f_title")).focus();
+  async function save(){const g=x=>document.getElementById(x).value.trim();const err=document.getElementById("dErr");
+    const title=g("f_title"),s=g("f_s"),e=g("f_e"),link=g("f_link");
+    if(!title){err.textContent="Escreva um título para a pauta.";document.getElementById("f_title").focus();return}
+    if(e&&!s){err.textContent="Preencha a data de início antes da data final.";return}
+    if(e&&s&&e<s){err.textContent="A data final precisa ser igual ou depois da data de início.";return}
+    if(link&&!okUrl(link)){err.textContent="O link precisa começar com https:// (por exemplo, https://noticias.adventistas.org/...).";document.getElementById("f_link").focus();return}
+    const rec={title,k:g("f_k"),m:s?dt(s).getMonth():+g("f_m"),s,e,dept:g("f_dept"),p:g("f_p"),f:g("f_f"),ch:Object.keys(CH).filter(k=>document.getElementById("f_ch_"+k).checked),pauta:g("f_pauta"),fontes:g("f_fontes"),resp:g("f_resp"),link,at:new Date().toISOString()};
+    if(!rec.ch.length)rec.ch=["P"];
+    const id=editing.id,prev=over[id],newSt=g("f_status");over[id]=rec;close();
+    if(rec.m!==undefined)open.add(rec.m);render();
+    const ok=await writeDoc("pautas",id,rec,()=>{if(prev)over[id]=prev;else delete over[id]});
+    if(ok&&(status[id]||"todo")!==newSt){const p=status[id];status[id]=newSt;render();await writeDoc("status",id,{col:newSt,at:new Date().toISOString()},()=>{if(p)status[id]=p;else delete status[id]})}}
+}
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&editing){document.getElementById("drawerHost").innerHTML="";editing=null}});
+
+let pop=null;
+function closePop(){if(pop){pop.remove();pop=null}}
+function openPop(btn,id,kind){closePop();if(!canWrite)return;const opts=kind==="pr"?Object.entries(PR).map(([k,v])=>[k,v[0],v[1]]):ST;const r=btn.getBoundingClientRect();pop=document.createElement("div");pop.className="pop";pop.setAttribute("role","menu");
+  pop.innerHTML=opts.map(([k,l,c])=>`<button class="pill" type="button" role="menuitem" data-set="${k}" style="background:${c}">${l}</button>`).join("");
+  document.body.appendChild(pop);const w=180,h=pop.offsetHeight;let left=Math.min(r.left+r.width/2-w/2,innerWidth-w-8);left=Math.max(8,left);let top=r.bottom+4;if(top+h>innerHeight-8)top=r.top-h-4;
+  pop.style.left=left+"px";pop.style.top=top+"px";
+  pop.addEventListener("click",e=>{const b=e.target.closest("[data-set]");if(b){kind==="pr"?setPrio(id,b.dataset.set):setStatus(id,b.dataset.set);closePop()}});
+  pop.querySelector("button").focus()}
+document.addEventListener("click",e=>{if(pop&&!pop.contains(e.target)&&!e.target.closest("[data-st],[data-pr]"))closePop()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closePop()});
+addEventListener("scroll",closePop,true);
+document.getElementById("viewT").addEventListener("click",e=>{
+  const g=e.target.closest("[data-g]");if(g){const m=+g.dataset.g;open.has(m)?open.delete(m):open.add(m);render();return}
+  const ed=e.target.closest("[data-edit]");if(ed){openDrawer(ed.dataset.edit,ed.dataset.focus);return}
+  const n=e.target.closest("[data-new]");if(n){openDrawer(null,null,+n.dataset.new);return}
+  const x=e.target.closest("[data-x]");if(x){const id=x.dataset.x;expanded.has(id)?expanded.delete(id):expanded.add(id);render();return}
+  const s=e.target.closest("[data-st]");if(s){e.stopPropagation();pop?closePop():openPop(s,s.dataset.st,"st");return}
+  const pr=e.target.closest("[data-pr]");if(pr){e.stopPropagation();pop?closePop():openPop(pr,pr.dataset.pr,"pr")}});
+const KB=document.getElementById("kboard");let dragId=null;
+KB.addEventListener("click",e=>{const pr=e.target.closest("[data-pr]");if(pr){e.stopPropagation();pop?closePop():openPop(pr,pr.dataset.pr,"pr");return}
+  const ed=e.target.closest("[data-edit]");if(ed){openDrawer(ed.dataset.edit);return}
+  const b=e.target.closest("[data-mv]");if(!b)return;const id=b.dataset.id;const cur=ST.findIndex(s=>s[0]===(status[id]||"todo"));const nx=cur+ +b.dataset.mv;if(nx>=0&&nx<ST.length)setStatus(id,ST[nx][0])});
+KB.addEventListener("dragstart",e=>{const el=e.target.closest(".kcard");if(!el||!canWrite)return;dragId=el.dataset.id;el.classList.add("dragging");try{e.dataTransfer.setData("text/plain",dragId)}catch(x){}});
+KB.addEventListener("dragend",e=>{const el=e.target.closest(".kcard");if(el)el.classList.remove("dragging");KB.querySelectorAll(".over").forEach(x=>x.classList.remove("over"))});
+KB.addEventListener("dragover",e=>{const c=e.target.closest(".kcol");if(!c||!dragId)return;e.preventDefault();KB.querySelectorAll(".over").forEach(x=>x!==c&&x.classList.remove("over"));c.classList.add("over")});
+KB.addEventListener("drop",e=>{const c=e.target.closest(".kcol");if(!c||!dragId)return;e.preventDefault();c.classList.remove("over");setStatus(dragId,c.dataset.col);dragId=null});
+function setView(v){view=v;document.getElementById("tabT").setAttribute("aria-selected",String(v==="T"));document.getElementById("tabK").setAttribute("aria-selected",String(v==="K"));
+  document.getElementById("viewT").hidden=v!=="T";document.getElementById("viewK").hidden=v!=="K";document.getElementById("toggleAll").hidden=v!=="T";
+  try{localStorage.setItem("anpa-view",v)}catch(e){}render()}
+document.getElementById("tabT").onclick=()=>setView("T");
+document.getElementById("tabK").onclick=()=>setView("K");
+document.getElementById("newBtn").onclick=()=>openDrawer(null);
+document.getElementById("q").oninput=e=>{f.q=e.target.value.trim();render()};
+document.getElementById("fk").onchange=e=>{f.k=e.target.value;render()};
+document.getElementById("fp").onchange=e=>{f.p=e.target.value;render()};
+document.getElementById("fper").onchange=e=>{f.per=e.target.value;if(f.per==="all")for(let m=0;m<12;m++)open.add(m);render()};
+document.getElementById("toggleAll").onclick=()=>{if(open.size)open.clear();else for(let m=0;m<12;m++)open.add(m);render()};
+document.getElementById("glist").innerHTML=G.map(g=>`<li>${esc(g)}</li>`).join("");
+loadLocal();
+let v0="T";try{v0=localStorage.getItem("anpa-view")||"T"}catch(e){}
+setView(v0==="K"?"K":"T");setSave("Salvo neste navegador",true);
+(async()=>{const use=n=>{try{return window.claude&&window.claude.use?window.claude.use(n):Promise.resolve(null)}catch(e){return Promise.resolve(null)}};
+  const [d,u]=await Promise.all([use("db").catch(()=>null),use("user").catch(()=>null)]);db=d;
+  if(u){try{const c=await u.can("data.write");if(c===false){canWrite=false;render()}}catch(e){}}
+  if(!db){setSave("Salvo neste navegador",true);return}
+  setSave(canWrite?"Sincronizado":"Somente leitura",!canWrite);
+  db.collection("status").onSnapshot(snap=>{const s={};snap.docs.forEach(x=>{const v=x.data();if(v&&v.col)s[x.id]=v.col});status=s;render()},()=>setSave("Sem conexão com o quadro salvo",true));
+  db.collection("pautas").onSnapshot(snap=>{const o={};snap.docs.forEach(x=>{const v=x.data();if(v)o[x.id]=v});over=o;render()},()=>setSave("Sem conexão com o quadro salvo",true));
+})();
+</script>
+<script>if("serviceWorker" in navigator){addEventListener("load",()=>{navigator.serviceWorker.register("sw.js").catch(()=>{})})}</script>
+</body>
+</html>
