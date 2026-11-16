@@ -408,6 +408,13 @@ const base={};
 D.forEach(r=>{const ch=r[7].split(",");if(!ch.includes("P"))return;const id=r[0]+"-"+slug(r[3]);
   base[id]={id,title:r[3],k:r[2],m:+r[0].slice(5,7)-1,s:r[0],e:r[1]||"",dept:r[4],p:r[5],f:r[6],ch,pauta:r[8],fontes:"",resp:"",link:""}});
 E.forEach(x=>{const id="sug-"+x.m+"-"+slug(x.tema);base[id]={id,title:x.tema,k:"s",m:x.m-1,s:"",e:"",dept:x.dept,p:"M",f:x.f,ch:["P"],pauta:x.ang,fontes:x.fontes,resp:"",link:""}});
+const X=[
+{id:"mat-abertura-assembleia",title:"Abertura da XIX Assembleia Ordinária da ANPa",s:"2026-11-20",dept:"Administração",p:"A",f:"F",pauta:"Cobertura da abertura da Assembleia Ordinária “À Luz da Palavra”."},
+{id:"mat-simposio-espirito-de-profecia",title:"Simpósio do Espírito de Profecia",s:"",dept:"Escola Sabatina / Publicações",p:"M",f:"F",pauta:"Cobertura do simpósio sobre o Espírito de Profecia."},
+{id:"mat-crescimento-do-campo",title:"Crescimento do campo",s:"",dept:"Administração",p:"M",f:"F",pauta:"Matéria sobre o crescimento da obra no território da ANPa."},
+{id:"mat-sva",title:"SVA – Serviço Voluntário Adventista",s:"",dept:"Ministério Jovem",p:"M",f:"S",pauta:"Matéria sobre o Serviço Voluntário Adventista."}];
+X.forEach(x=>{base[x.id]={id:x.id,title:x.title,k:"i",m:10,s:x.s,e:"",dept:x.dept,p:x.p,f:x.f,ch:["P"],pauta:x.pauta,fontes:"",resp:"",link:""}});
+const DEFST=Object.fromEntries(X.map(x=>[x.id,"prod"]));
 let over={},status={},db=null,canWrite=true,view="T";
 function items(){const out=[];const ids=new Set([...Object.keys(base),...Object.keys(over)]);
   ids.forEach(id=>{const b=base[id],o=over[id];if(o&&o.deleted)return;if(!b&&!o)return;const it={...(b||{id,title:"",k:"i",m:0,s:"",e:"",dept:"",p:"M",f:"F",ch:["P"],pauta:"",fontes:"",resp:"",link:""}),...(o||{}),id};
@@ -421,7 +428,7 @@ const setSave=(t,warn)=>{saveEl.textContent=t;saveEl.classList.toggle("warn",!!w
 const INICIAL={"status": {"2026-10-03-sabado-da-educacao-adventista": "nf", "2026-10-10-aniversario-da-escola-sabatina": "nf", "2026-10-15-dia-do-professor": "nf", "2026-10-17-sabado-impacto-esperanca": "pub", "2026-10-18-evangelismo-master": "nf", "2026-10-31-dia-da-reforma-protestante": "pub", "2026-11-07-dia-do-espirito-de-profecia": "nf", "2026-11-14-mordomia-crista-celebracao-dos-90-anos-da-unb": "pub", "n-mvpw9nibsx97": "pub", "n-mwjmwyf20hnm": "pub"}, "over": {"2026-10-18-evangelismo-master": {"at": "2026-10-27T00:10:51.790Z", "ch": ["P"], "dept": "Ministério Pessoal", "e": "2026-10-31", "f": "F", "fontes": "", "k": "i", "link": "", "m": 9, "p": "B", "pauta": "Séries evangelísticas em andamento e resultados ao final.", "resp": "", "s": "2026-10-18", "title": "Evangelismo MASTER"}, "2026-10-31-dia-da-reforma-protestante": {"at": "2026-10-30T15:52:54.535Z", "ch": ["P", "R"], "dept": "Comunicação", "e": "", "f": "N", "fontes": "", "k": "c", "link": "https://noticias.adventistas.org/pt/reforma-protestante-31-10-26/", "m": 9, "p": "M", "pauta": "A herança da Reforma e o lugar da Bíblia na fé adventista.", "resp": "Everton Ferreira", "s": "2026-10-30", "title": "Dia da Reforma Protestante"}, "2026-11-06-encontro-de-casais-com-cristo-ecc": {"at": "2026-11-16T19:08:19.215Z", "deleted": true}, "2026-11-14-mordomia-crista-celebracao-dos-90-anos-da-unb": {"at": "2026-11-16T19:06:20.701Z", "ch": ["P"], "dept": "Administração", "e": "2026-11-14", "f": "F", "fontes": "", "k": "c", "link": "https://noticias.adventistas.org/pt/fortes-na-palavra/", "m": 10, "p": "A", "pauta": "Celebração dos 90 anos: história e presença da igreja no Norte.", "resp": "Everton Ferreira", "s": "2026-11-14", "title": "Livro “Fortes na Palavra” resgata 90 anos de história da Igreja Adventista no Norte do Brasil"}, "n-mvpw9nibsx97": {"at": "2026-10-26T23:36:29.393Z", "ch": ["P"], "dept": "Saúde", "e": "", "f": "F", "fontes": "", "k": "i", "link": "https://noticias.adventistas.org/pt/outubro-rosa/", "m": 9, "p": "M", "pauta": "Outubro Rosa", "resp": "Everton Ferreira", "s": "2026-10-26", "title": "Ação social oferece cuidados gratuitos a mulheres em alusão ao Outubro Rosa"}, "n-mwjmwyf20hnm": {"at": "2026-11-16T19:07:58.495Z", "ch": ["P"], "dept": "Comunicação", "e": "2026-11-16", "f": "N", "fontes": "", "k": "i", "link": "https://noticias.adventistas.org/pt/xix-assembleia-anpa-2026/", "m": 10, "p": "M", "pauta": "Assembleia Ordinária ANPa", "resp": "Everton Ferreira", "s": "2026-11-16", "title": "Associação Norte do Pará realiza 19ª Assembleia Ordinária nos dias 21 e 22 de novembro"}}};
 function loadLocal(){status={...INICIAL.status};over=JSON.parse(JSON.stringify(INICIAL.over));try{const v=JSON.parse(localStorage.getItem("anpa-board")||"null");if(v){status=v.status||{};over=v.over||{}}}catch(e){}}
 function saveLocal(){try{localStorage.setItem("anpa-board",JSON.stringify({status,over}))}catch(e){}}
-const stOf=i=>status[i.id]||"todo";
+const stOf=i=>status[i.id]||DEFST[i.id]||"todo";
 function vis(i){if(f.per==="next"&&i.m<now.getMonth())return false;if(f.k!=="all"&&i.k!==f.k)return false;if(f.p!=="all"&&i.p!==f.p)return false;
   if(f.q){const q=f.q.toLowerCase();if(!(i.title+" "+i.dept+" "+i.pauta+" "+(i.resp||"")).toLowerCase().includes(q))return false}return true}
 function due(i){const s=stOf(i);if(s==="nf")return{t:"Não realizada",c:""};if(s==="pub")return i.link?{t:"Publicada ✓",c:"ok"}:{t:"Publicada · falta o link",c:"late"};if(!i.sd)return{t:"Sem data fixa",c:""};
@@ -488,7 +495,7 @@ function openDrawer(id,focusField,month){closePop();delArmed=false;
 <form class="dbody" id="dForm" novalidate>
 <div class="fld"><label for="f_title">Título da pauta</label><input id="f_title" value="${esc(it.title)}" required></div>
 <div class="fld"><label for="f_link">Link da matéria publicada</label><input id="f_link" type="url" inputmode="url" placeholder="https://noticias.adventistas.org/..." value="${esc(it.link)}"><span class="hint">Cole o endereço da matéria no Portal depois de publicada.</span></div>
-<div class="two"><div class="fld"><label for="f_status">Status</label><select id="f_status">${ST.map(([k,l])=>`<option value="${k}" ${(status[it.id]||"todo")===k?"selected":""}>${l}</option>`).join("")}</select></div>
+<div class="two"><div class="fld"><label for="f_status">Status</label><select id="f_status">${ST.map(([k,l])=>`<option value="${k}" ${(status[it.id]||DEFST[it.id]||"todo")===k?"selected":""}>${l}</option>`).join("")}</select></div>
 <div class="fld"><label for="f_resp">Responsável</label><input id="f_resp" value="${esc(it.resp)}" placeholder="Nome de quem produz"></div></div>
 <div class="two"><div class="fld"><label for="f_s">Data</label><input id="f_s" type="date" min="2026-01-01" max="2026-12-31" value="${esc(it.s)}"></div>
 <div class="fld"><label for="f_e">Até (opcional)</label><input id="f_e" type="date" min="2026-01-01" max="2026-12-31" value="${esc(it.e)}"></div></div>
@@ -523,7 +530,7 @@ function openDrawer(id,focusField,month){closePop();delArmed=false;
     const id=editing.id,prev=over[id],newSt=g("f_status");over[id]=rec;close();
     if(rec.m!==undefined)open.add(rec.m);render();
     const ok=await writeDoc("pautas",id,rec,()=>{if(prev)over[id]=prev;else delete over[id]});
-    if(ok&&(status[id]||"todo")!==newSt){const p=status[id];status[id]=newSt;render();await writeDoc("status",id,{col:newSt,at:new Date().toISOString()},()=>{if(p)status[id]=p;else delete status[id]})}}
+    if(ok&&(status[id]||DEFST[id]||"todo")!==newSt){const p=status[id];status[id]=newSt;render();await writeDoc("status",id,{col:newSt,at:new Date().toISOString()},()=>{if(p)status[id]=p;else delete status[id]})}}
 }
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&editing){document.getElementById("drawerHost").innerHTML="";editing=null}});
 
@@ -548,7 +555,7 @@ document.getElementById("viewT").addEventListener("click",e=>{
 const KB=document.getElementById("kboard");let dragId=null;
 KB.addEventListener("click",e=>{const pr=e.target.closest("[data-pr]");if(pr){e.stopPropagation();pop?closePop():openPop(pr,pr.dataset.pr,"pr");return}
   const ed=e.target.closest("[data-edit]");if(ed){openDrawer(ed.dataset.edit);return}
-  const b=e.target.closest("[data-mv]");if(!b)return;const id=b.dataset.id;const cur=ST.findIndex(s=>s[0]===(status[id]||"todo"));const nx=cur+ +b.dataset.mv;if(nx>=0&&nx<ST.length)setStatus(id,ST[nx][0])});
+  const b=e.target.closest("[data-mv]");if(!b)return;const id=b.dataset.id;const cur=ST.findIndex(s=>s[0]===(status[id]||DEFST[id]||"todo"));const nx=cur+ +b.dataset.mv;if(nx>=0&&nx<ST.length)setStatus(id,ST[nx][0])});
 KB.addEventListener("dragstart",e=>{const el=e.target.closest(".kcard");if(!el||!canWrite)return;dragId=el.dataset.id;el.classList.add("dragging");try{e.dataTransfer.setData("text/plain",dragId)}catch(x){}});
 KB.addEventListener("dragend",e=>{const el=e.target.closest(".kcard");if(el)el.classList.remove("dragging");KB.querySelectorAll(".over").forEach(x=>x.classList.remove("over"))});
 KB.addEventListener("dragover",e=>{const c=e.target.closest(".kcol");if(!c||!dragId)return;e.preventDefault();KB.querySelectorAll(".over").forEach(x=>x!==c&&x.classList.remove("over"));c.classList.add("over")});
