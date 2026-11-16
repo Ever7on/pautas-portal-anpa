@@ -1,5 +1,5 @@
 // Mantém o quadro abrindo mesmo sem internet. Busca a versão nova primeiro e usa a cópia salva se estiver offline.
-const CACHE = "pautas-anpa-v3";
+const CACHE = "pautas-anpa-v4";
 const FILES = ["./", "index.html", "manifest.webmanifest", "icon.svg", "icon-192.png", "icon-512.png", "apple-touch-icon.png", "favicon-32.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
